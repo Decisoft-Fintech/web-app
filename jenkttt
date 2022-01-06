@@ -1,0 +1,35 @@
+node { MH2D = tool name : 'maven3.84'
+
+stage ('1.Clone') {
+git credentialsId: 'Github-Credentials', url: 'https://github.com/Ndolino/web-app'
+}
+
+stage ('2.Build') {
+sh "${MH2D}/bin/mvn clean package"
+
+}
+stage ('3.Quality') {
+sh "${MH2D}/bin/mvn sonar:sonar"
+
+}
+stage ('4.Upload') {
+sh "${MH2D}/bin/mvn deploy"
+}
+stage ('5.DeployUAT') {
+deploy adapters: [tomcat9(credentialsId: 'Tomcat-Credentials', path: '', url: 'http://35.189.73.133:8080/')], contextPath: null, war: 'target/*.war'
+
+}
+stage ('6.Approve') {
+timeout(time:5, unit:'DAYS'){
+       input message: 'Approval for production'
+
+}
+}
+
+stage ('5.Deployprod') {
+deploy adapters: [tomcat9(credentialsId: 'Tomcat-Credentials', path: '', url: 'http://35.189.73.133:8080/')], contextPath: null, war: 'target/*.war'
+
+}
+
+
+}
