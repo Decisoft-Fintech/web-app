@@ -1,7 +1,9 @@
 pipeline{
 agent any 
 tools {maven "maven3.8.4" }
-
+//triggers {
+//  pollSCM '* * * * *'
+// }
 stages{
 stage ('1.GitClone'){steps{
     git credentialsId: 'GithubCredentials', url: 'https://github.com/Ndolino/web-app'
