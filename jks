@@ -1,0 +1,49 @@
+pipeline{
+agent any 
+tools {maven "maven3.8.4" }
+
+stages{
+stage ('1.GitClone'){steps{
+    git credentialsId: 'GithubCredentials', url: 'https://github.com/Ndolino/web-app'
+
+}}
+stage ('2.Build'){steps{
+sh "mvn clean package"
+
+}}
+stage ('3.CodeQuality'){steps{
+sh "mvn sonar:sonar"
+
+}}
+stage ('4.uploadsArtifacts'){steps{
+sh "mvn deploy"
+}}
+stage ('4.Deploy'){steps{
+sshagent(['2f836cfe-c2e5-4a99-a1ab-627ca444e650']) {
+    sh "scp -o StrictHostKeyChecking=no  target/*war ec2-user@172.31.81.167:/opt/tomcat9/webapps"
+}}
+}
+
+
+}
+post{
+
+always {mail bcc: '', body: '''Build Done!
+Regards.
+Decisoft''', cc: 'michelgm276@gmail.com', from: '', replyTo: '', subject: 'Build Done', to: 'michelgm276@gmail.com'
+
+}
+failure{
+mail bcc: '', body: '''Build Failed!
+Regards.
+Decisoft''', cc: 'michelgm276@gmail.com', from: '', replyTo: '', subject: 'Build Failed', to: 'michelgm276@gmail.com'
+}
+success{
+mail bcc: '', body: '''Build successful!
+Regards.
+Decisoft''', cc: 'michelgm276@gmail.com', from: '', replyTo: '', subject: 'Build Sucess', to: 'michelgm276@gmail.com'
+
+}
+
+}
+}
