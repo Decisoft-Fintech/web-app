@@ -1,0 +1,78 @@
+pipeline{
+    agent any
+    
+    stages{
+    
+    stage('UnDeploy'){
+      steps{
+    
+        sh "docker rm -f web-app"
+      }
+    }
+    stage('deployment'){
+      steps{
+     
+             sh "docker run --name web-app -d -p 800:8080  michelgm/web-app"
+      }
+    }
+  stage('emailNotification'){
+    steps{
+      sh "echo deployment successful"
+    }
+  }  
+    }
+}
+    
+    
+    
+    
+    pipeline {
+    
+    agent any
+    tools{ maven "maven3.8.4"}
+    stages{
+        stage('1.Clone'){
+            steps{
+                git credentialsId: 'GitHubCredentials', url: 'https://github.com/Ndolino/web-app.git'
+            }
+        }
+         stage('2.build'){
+            steps{
+                sh "mvn clean package"
+            }
+        }
+          stage('3.Code Quality'){
+            steps{
+                sh "mvn sonar:sonar"
+            }
+        }
+        stage('4.Upload Artifacts'){
+            steps{
+                sh "mvn deploy"
+            }
+        }
+        stage('predeployment'){
+      steps{
+        sh "echo creating docker image"
+        sh "docker build -t  michelgm/web-app . "
+        sh "docker push michelgm/web-app"
+      }
+    }
+        
+        
+        
+        
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+}
