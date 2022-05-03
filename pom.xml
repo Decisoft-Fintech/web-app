@@ -97,17 +97,17 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Landmark Technologies Releases Nexus Repository</name>
-	      <url>http://34.224.2.69:3000/repository/boa-release/</url>
+	      <url>http://35.88.35.235:8081/repository/maven-gandeu/</url>
 		  
 	    </repository>
 	    
-	    <snapshotRepository>
+	    /*<snapshotRepository>
 	      <id>nexus</id>
 	      <name>Landmark Technologies Snapshot Nexus Repository </name>
 	      <url>http://34.224.2.69:3000/repository/boa-snapshot/</url>
 		    
+	    </snapshotRepository>  */
 		    
-	    </snapshotRepository>
 	    
 	</distributionManagement>
 	
