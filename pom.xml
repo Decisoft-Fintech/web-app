@@ -101,12 +101,12 @@
 		  
 	    </repository>
 	    
-	    /*<snapshotRepository>
+	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Landmark Technologies Snapshot Nexus Repository </name>
 	      <url>http://34.224.2.69:3000/repository/boa-snapshot/</url>
 		    
-	    </snapshotRepository>  */
+	    </snapshotRepository>  
 		    
 	    
 	</distributionManagement>
